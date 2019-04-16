@@ -4,20 +4,24 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Scanner;
 
-public class InsertTest1 {
+public class DeleteTest1 {
 
 	public static void main(String[] args) {
 
-		Connection con = null;
+		// 부서번호를 입력받아서
+		// dept에서 삭제
+
+		Scanner sc = new Scanner(System.in);
 		PreparedStatement st = null;
+		Connection con = null;
 		int result = 0;
 
-		int deptno = 50;
-		String dname = "SULTAN";
-		String loc = "PERSIA";
+		System.out.println("삭제할 부서번호 입력");
+		result = sc.nextInt();
 
-		// 1. 로그인 정보 4가지
+		// 1. 4가지 정보
 
 		String user = "scott";
 		String password = "tiger";
@@ -25,23 +29,23 @@ public class InsertTest1 {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 
 		// 2. 드라이버를 메모리에 로딩
+
 		try {
 			Class.forName(driver);
 
 			// 3. 로그인 후 Connection 객체 받아오기
 			con = DriverManager.getConnection(url, user, password);
 
-			// 4. SQL문을 작성
-			String sql = "insert into dept values(?, ?, ?)";
+			// 4. SQL문 작성
+
+			String sql = "delete dept where deptno = ?";
 
 			// 5. SQL 미리 전송
+
 			st = con.prepareStatement(sql);
 
 			// 6. ? 값 세팅
-			// st.setXXX (?의 인덱스 번호, 해당하는 값);
-			st.setInt(1, deptno);
-			st.setString(2, dname);
-			st.setString(3, loc);
+			st.setInt(1, result);
 
 			// 7. 최종 전송 후 결과 처리
 			result = st.executeUpdate();
@@ -49,13 +53,16 @@ public class InsertTest1 {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		} finally {
-			
+
+			// 8. 연결끊기
+
 			try {
 				st.close();
 				con.close();
-				
-			} catch (Exception e) {
+
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
