@@ -2,56 +2,41 @@ package com.rjm.db.point;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.Scanner;
 
 import com.rjm.db.utill.DBConnector;
 
 public class PointDAO {
 
-	// 메서드명 delete 매개변수
+	// 메서드명 insert
 
-	// 데이터를 넣거나 꺼내오는 역할
+	public int insert(PointDTO dto) throws Exception {
+		Connection conn = DBConnector.getConnect();
 
-	// 메서드명 insert 예외는 던지기 리턴은 result
+		String sql = "insert into point values(?,?,?,?,?,?,?,?)";
+		PreparedStatement pst = conn.prepareStatement(sql);
 
-	public int insert(PointDTO pointDTO) throws Exception {
+		pst.setInt(1, dto.getNum());
+		pst.setString(2, dto.getsId());
+		pst.setInt(3, dto.getKor());
+		pst.setInt(4, dto.getEng());
+		pst.setInt(5, dto.getMath());
+		pst.setInt(6, dto.getTotal());
+		pst.setDouble(7, dto.getAvg());
+		pst.setInt(8, dto.getbNum());
 
-		// 입력받는 코드
+		int result = pst.executeUpdate();
 
-		Connection con = DBConnector.getConnect();
-
-		String sql = "insert into point values(" + "?,?,?,?,?,?,?,?)";
-
-		PreparedStatement st = con.prepareStatement(sql);
-		st.setInt(1, pointDTO.getNum());
-		st.setString(2, pointDTO.getsId());
-		st.setInt(3, pointDTO.getKor());
-		st.setInt(4, pointDTO.getEng());
-		st.setInt(5, pointDTO.getMath());
-		st.setInt(6, pointDTO.getTotal());
-		st.setDouble(7, pointDTO.getAvg());
-		st.setInt(8, pointDTO.getbNum());
-
-		// 8개 set
-
-		int result = st.executeUpdate();
-		DBConnector.disConnect(st, con);
+		DBConnector.disConnect(pst, conn);
 
 		return result;
-
-		// 1. 4가지 정보
-
-		// 2. 드라이버 메모리에 로딩
-
-		// 3. Connection
-
-		// 4. SQL문 작성
-
-		// 5. SQL 미리전송
-
-		// 6. ? 세팅
-
-		// 7. 최종 전송 후 결과 처리
-
-		// 8. 연결 끊기
 	}
+
+	// delete
+
+	public int delete() throws Exception {
+
+		return 0;
+	}
+
 }
